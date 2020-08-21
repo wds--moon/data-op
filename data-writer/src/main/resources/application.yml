@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    testwrite:
+      jdbc-url: 'jdbc:mysql://10.10.1.100/test_write?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf-8&autoReconnect=true&serverTimezone=Asia/Shanghai'
+      driver-class-name: 'com.mysql.cj.jdbc.Driver'
+      username: 'root'
+      password: 'Abc.123456'
+#    testcenter:
+#      jdbc-url: 'jdbc:mysql://10.10.1.100/test_center?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf-8&autoReconnect=true&serverTimezone=Asia/Shanghai'
+#      driver-class-name: 'com.mysql.cj.jdbc.Driver'
+#      username: 'root'
+#      password: 'Abc.123456'
+server:
+  port: 8899
