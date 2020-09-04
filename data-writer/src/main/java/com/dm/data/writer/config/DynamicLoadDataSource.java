@@ -27,7 +27,7 @@ public class DynamicLoadDataSource {
     }
 
     @Bean(name = "testWriteJdbcTemplate")
-    public NamedParameterJdbcTemplate testWriteJdbcTemplate( @Qualifier("testWriteDataSource") DataSource dataSource) {
+    public NamedParameterJdbcTemplate testWriteJdbcTemplate(@Qualifier("testWriteDataSource") DataSource dataSource) {
         return new NamedParameterJdbcTemplate(dataSource);
     }
 

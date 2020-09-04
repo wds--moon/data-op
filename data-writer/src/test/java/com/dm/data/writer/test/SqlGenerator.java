@@ -18,7 +18,7 @@ public class SqlGenerator {
 
     /**
      * 构建insert语句
-     * 
+     *
      * @param table  要构建的表
      * @param params 要构建的参数
      * @return
@@ -41,7 +41,7 @@ public class SqlGenerator {
 
     /**
      * 将键名转换为`key`的形式
-     * 
+     *
      * @param key
      * @return
      */
@@ -51,7 +51,7 @@ public class SqlGenerator {
 
     /**
      * 将键名转换为:key的形式
-     * 
+     *
      * @param key
      * @return
      */
@@ -61,7 +61,7 @@ public class SqlGenerator {
 
     /**
      * 将一个键构建为 'key'=:key的形式
-     * 
+     *
      * @param key
      * @return
      */
@@ -71,7 +71,7 @@ public class SqlGenerator {
 
     /**
      * 将很多键构建为'key'=:key的形式
-     * 
+     *
      * @param keys
      * @return
      */
@@ -81,7 +81,7 @@ public class SqlGenerator {
 
     /**
      * 构建update语句
-     * 
+     *
      * @param table      要更行的表
      * @param params     数据参数
      * @param keyColumns 表的id列

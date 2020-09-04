@@ -20,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,16 +47,23 @@ public class DataController {
     private DynamicJdbcAdapter dynamicJdbcAdapter;
 
     private static final String PRIMARY_DATABASE = "test_write";
+    private static final Integer DATA_SIZE = 100;
 
     @ResponseBody
     @PostMapping("{name}")
     public Result save(@PathVariable("name") String name, @RequestBody DataModel model) throws UnsupportedEncodingException {
+        if(model==null||CollectionUtils.isEmpty(model.getData())){
+            throw new LogException(name, null, "数据不能为空", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
         if (StringUtils.isEmpty(name)) {
-            throw new LogException(name, model.getData(), "接口不存在", HttpStatus.NOT_FOUND);
+            throw new LogException(name, model.getData(), "接口不存在", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        if(model.getData().size()>DATA_SIZE){
+            throw new LogException(name, model.getData(), "数据集合大小一次不能超过100条", HttpStatus.UNPROCESSABLE_ENTITY);
         }
         TableInfo tableInfo = dynamicJdbcComponent.findByInterfaceName(name);
         if (tableInfo == null) {
-            throw new LogException(name, model.getData(), "接口不存在", HttpStatus.NOT_FOUND);
+            throw new LogException(name, model.getData(), "接口不存在", HttpStatus.UNPROCESSABLE_ENTITY);
         }
         model.setInterfaceName(name);
         /**
@@ -83,10 +91,10 @@ public class DataController {
     @ResponseBody
     @GetMapping("logs")
     public Page<InterfaceLog> findLogList(
-        @RequestParam(value = "name", required = false) String name,
-        @RequestParam(value = "startDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime startDate,
-        @RequestParam(value = "endDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime endDate,
-        @PageableDefault Pageable pageable) {
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "startDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime startDate,
+            @RequestParam(value = "endDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime endDate,
+            @PageableDefault Pageable pageable) {
         InterfaceLog log = new InterfaceLog();
         if (StringUtils.isNotEmpty(name)) {
             log.setName(name);
@@ -103,8 +111,8 @@ public class DataController {
     @ResponseBody
     @GetMapping("interfaceLogs")
     public Page<LogDto> findInterfaceLogList(
-        @RequestParam(value = "name", required = false) String name,
-        @PageableDefault Pageable pageable) {
+            @RequestParam(value = "name", required = false) String name,
+            @PageableDefault Pageable pageable) {
         return dynamicJdbcAdapter.findGroupLog(name, pageable);
     }
 }

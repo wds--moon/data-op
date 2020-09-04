@@ -1,34 +1,59 @@
 package com.dm.data.writer.component;
 
 
+import com.dm.data.writer.dto.ImgThread;
 import com.dm.data.writer.entity.TableInfo;
 import com.dm.data.writer.util.DataModel;
+import com.dm.data.writer.util.ImageBase64Utils;
 import com.dm.data.writer.util.TableEnum;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
  * @author wendongshan
  */
+@Slf4j
 @Component
 public class JdbcComponent {
 
     private static final String ID = "id";
+    private static final String IMG = "img";
+
+    @Value("${base.img.url}")
+    private String imgUrl;
 
     @Autowired
     private DynamicJdbcAdapter jdbcAdapter;
+
+    /**
+     *
+     * 由于是io操作 设置核心线程数量1 最大线程数量cpu核数*8  设置队列1 设置线程名称为img-pool-   异常机制使用抛出异常
+     *
+     */
+    static ExecutorService executorService = new ThreadPoolExecutor(1, Runtime.getRuntime().availableProcessors() * 8, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingDeque<>(1), new ThreadFactoryBuilder().setNameFormat("img-pool-%d").build(), new ThreadPoolExecutor.AbortPolicy());
 
     @Transactional(rollbackFor = Exception.class)
     public void save(DataModel model, TableInfo tableName) {
         String sql;
         for (LinkedHashMap<String, Object> data : model.getData()) {
+            setImg(data);
             if (generatorSelectSql(tableName, Long.parseLong(data.get(ID).toString()))) {
                 sql = generatorUpdateSql(tableName.getTableName(), data);
             } else {
@@ -38,8 +63,27 @@ public class JdbcComponent {
         }
     }
 
+    private void setImg(LinkedHashMap<String, Object> data) {
+        /**
+         * 如果存在img图片,那么需要把图片转存到本地,本地存储指定的相对url地址,图片转换失败继续操作
+         */
+
+        if (data.containsKey(IMG) && data.get(IMG) != null) {
+            List<String> imgs = (List<String>) data.get(IMG);
+            List<String> list = new ArrayList<>();
+            for (String img : imgs) {
+                String fileName = UUID.randomUUID().toString() + ImageBase64Utils.getImgSuffix(img);
+                String url = imgUrl + File.separator + fileName;
+                list.add(fileName);
+                executorService.submit(new ImgThread(url, img));
+            }
+
+            data.put("img", StringUtils.join(list, ","));
+        }
+    }
+
     @Transactional(rollbackFor = Exception.class)
-    public void setSaveLog(String interfaceName, String data, String status, String remark,Integer num,String databaseName,String tableName) {
+    public void setSaveLog(String interfaceName, String data, String status, String remark, Integer num, String databaseName, String tableName) {
 
         LinkedHashMap<String, Object> param = new LinkedHashMap<>();
         param.put("name", interfaceName);

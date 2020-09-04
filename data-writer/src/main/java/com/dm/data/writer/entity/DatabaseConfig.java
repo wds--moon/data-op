@@ -4,6 +4,7 @@ import lombok.Data;
 
 /**
  * 数据库连接配置
+ *
  * @author wendongshan
  */
 @Data

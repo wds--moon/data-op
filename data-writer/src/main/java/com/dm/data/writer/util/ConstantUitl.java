@@ -5,8 +5,8 @@ package com.dm.data.writer.util;
  */
 public interface ConstantUitl {
 
-    interface Operation{
-        String SUCCESS="成功";
-        String FAIL="失败";
+    interface Operation {
+        String SUCCESS = "成功";
+        String FAIL = "失败";
     }
 }

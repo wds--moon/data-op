@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 /**
  * 指定返回类型
+ *
  * @author wendongshan
  */
 public class Result implements Serializable {

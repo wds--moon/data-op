@@ -34,12 +34,13 @@ public class InterfaceExceptionAdvice {
          * 先保存日志
          */
         TableInfo tableInfo = dynamicJdbcComponent.findByInterfaceName(e.getInterfaceName());
-        jdbcComponent.setSaveLog(e.getInterfaceName(), JSON.toJSONString(e.getData()), ConstantUitl.Operation.FAIL, e.getMsg(),0,tableInfo.getDatabase(),tableInfo.getTableName());
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR.value()).body(new Result(HttpStatus.INTERNAL_SERVER_ERROR.value(), null, e.getInterfaceName(), e.getMsg())) ;
+        jdbcComponent.setSaveLog(e.getInterfaceName(), JSON.toJSONString(e.getData()), ConstantUitl.Operation.FAIL, e.getMsg(), 0, tableInfo.getDatabase(), tableInfo.getTableName());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR.value()).body(new Result(HttpStatus.INTERNAL_SERVER_ERROR.value(), null, e.getInterfaceName(), e.getMsg()));
     }
 
     /**
      * 对于运行时候的异常全部指定为系统异常
+     *
      * @param e
      * @return
      */
@@ -49,7 +50,7 @@ public class InterfaceExceptionAdvice {
         /**
          * 先保存日志
          */
-        jdbcComponent.setSaveLog("system error", null, ConstantUitl.Operation.FAIL, e.getLocalizedMessage(),0,null,null);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR.value()).body(new Result(HttpStatus.INTERNAL_SERVER_ERROR.value(), null, null, e.getLocalizedMessage())) ;
+        jdbcComponent.setSaveLog("system error", null, ConstantUitl.Operation.FAIL, e.getLocalizedMessage(), 0, null, null);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR.value()).body(new Result(HttpStatus.INTERNAL_SERVER_ERROR.value(), null, null, e.getLocalizedMessage()));
     }
 }

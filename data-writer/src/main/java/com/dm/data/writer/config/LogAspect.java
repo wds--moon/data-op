@@ -51,7 +51,7 @@ public class LogAspect {
             throw new LogException(model.getInterfaceName(), model.getData(), e.getLocalizedMessage());
         }
         TableInfo tableInfo = dynamicJdbcComponent.findByInterfaceName(model.getInterfaceName());
-        jdbcComponent.setSaveLog(model.getInterfaceName(), JSON.toJSONString(model.getData()), ConstantUitl.Operation.SUCCESS, "", model.getData() == null ? 0 : model.getData().size(),tableInfo.getDatabase(),tableInfo.getTableName());
+        jdbcComponent.setSaveLog(model.getInterfaceName(), JSON.toJSONString(model.getData()), ConstantUitl.Operation.SUCCESS, "", model.getData() == null ? 0 : model.getData().size(), tableInfo.getDatabase(), tableInfo.getTableName());
         return object;
     }
 

@@ -4,8 +4,9 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
 @Data
-public class LogDto  implements Serializable {
+public class LogDto implements Serializable {
 
     private int id;
     private String name;

@@ -44,7 +44,7 @@ public class TestJdbc {
         System.out.println(sql);
     }
 
-    @SuppressWarnings({ "unchecked" })
+    @SuppressWarnings({"unchecked"})
     private Map<String, Object> parasJson(String str) throws JsonMappingException, JsonProcessingException {
         return om.readValue(str, Map.class);
     }
@@ -53,16 +53,16 @@ public class TestJdbc {
         StringBuilder builder = new StringBuilder();
         Set<String> keys = values.keySet();
         keys = keys.stream().map(key -> ":" + key).collect(Collectors.toSet());
-        builder.append("insert into ").append(table).append("(").append(StringUtils.join(keys, ",").replace(":","")).append(")").append(" values (")
-            .append(StringUtils.join(keys, ","))
-            .append(")");
+        builder.append("insert into ").append(table).append("(").append(StringUtils.join(keys, ",").replace(":", "")).append(")").append(" values (")
+                .append(StringUtils.join(keys, ","))
+                .append(")");
         return builder.toString();
     }
 
     private String generateUpdateSql(String table, Map<String, Object> values) {
         StringBuilder builder = new StringBuilder();
-        Set<String> keys = values.keySet().stream().filter(key->!key.equals("id")).map(key -> key+"= :" + key).collect(Collectors.toSet());
-        Set<String> ids = values.keySet().stream().filter(key->key.equals("id")).map(key -> key+"= :" + key).collect(Collectors.toSet());
+        Set<String> keys = values.keySet().stream().filter(key -> !key.equals("id")).map(key -> key + "= :" + key).collect(Collectors.toSet());
+        Set<String> ids = values.keySet().stream().filter(key -> key.equals("id")).map(key -> key + "= :" + key).collect(Collectors.toSet());
         /**
          * update table set a=:a,b=:b
          */

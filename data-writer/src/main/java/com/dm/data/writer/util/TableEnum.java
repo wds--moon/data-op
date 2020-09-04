@@ -3,13 +3,14 @@ package com.dm.data.writer.util;
 
 /**
  * 枚举类型,提供接口到表的转换,并且提供表的数据库名称从而指定不同数据源
+ *
  * @author wendongshan
  */
 public enum TableEnum {
     /**
      * 日志指定路径
      */
-    INTERFACE_LOG("log", "interface_log","test_writer");
+    INTERFACE_LOG("log", "interface_log", "test_writer");
     /**
      * 接口名称
      */
@@ -25,38 +26,41 @@ public enum TableEnum {
 
     /**
      * 构造函数
+     *
      * @param interfaceName 接口名称
-     * @param tableName 表名称
+     * @param tableName     表名称
      */
-    TableEnum( String interfaceName, String tableName,String database) {
+    TableEnum(String interfaceName, String tableName, String database) {
         this.interfaceName = interfaceName;
         this.tableName = tableName;
-        this.database=database;
+        this.database = database;
     }
 
     /**
      * 通过接口获取表名称
+     *
      * @param interfaceName
      * @return
      */
-   public static TableEnum getTableName(String interfaceName){
-       for (TableEnum tableEnum : values()) {
-           if (tableEnum.getInterfaceName().equals(interfaceName)) {
-               return  tableEnum;
-           }
-       }
-       return null;
+    public static TableEnum getTableName(String interfaceName) {
+        for (TableEnum tableEnum : values()) {
+            if (tableEnum.getInterfaceName().equals(interfaceName)) {
+                return tableEnum;
+            }
+        }
+        return null;
     }
 
     /**
      * 通过表名称获取数据库名称
+     *
      * @param tableName
      * @return
      */
-    public static TableEnum findDatabase(String tableName){
+    public static TableEnum findDatabase(String tableName) {
         for (TableEnum tableEnum : values()) {
             if (tableEnum.getTableName().equals(tableName)) {
-                return  tableEnum;
+                return tableEnum;
             }
         }
         return null;

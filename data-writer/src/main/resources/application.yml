@@ -12,3 +12,6 @@ spring:
 #      password: 'Abc.123456'
 server:
   port: 8899
+base:
+  img:
+    url: E:\\img

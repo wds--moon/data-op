@@ -40,16 +40,16 @@ public class DataModel {
         DataModel dataModel = (DataModel) o;
 
         return new EqualsBuilder()
-            .append(interfaceName, dataModel.interfaceName)
-            .append(data, dataModel.data)
-            .isEquals();
+                .append(interfaceName, dataModel.interfaceName)
+                .append(data, dataModel.data)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
-            .append(interfaceName)
-            .append(data)
-            .toHashCode();
+                .append(interfaceName)
+                .append(data)
+                .toHashCode();
     }
 }

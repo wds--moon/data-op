@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
  * @author wendongshan
  */
 @Data
-public class InterfaceLog  implements Serializable {
+public class InterfaceLog implements Serializable {
 
     private int id;
     private String name;

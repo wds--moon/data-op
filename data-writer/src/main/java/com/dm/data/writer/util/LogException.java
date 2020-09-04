@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 
 /**
  * 异常处理模型类
+ *
  * @author wendongshan
  */
 public class LogException extends RuntimeException {
@@ -11,20 +12,22 @@ public class LogException extends RuntimeException {
     private Object data;
     private String msg;
     private HttpStatus status;
+
     public LogException() {
 
     }
 
-    public LogException(String interfaceName, Object data,String msg,HttpStatus status) {
+    public LogException(String interfaceName, Object data, String msg, HttpStatus status) {
         this.interfaceName = interfaceName;
         this.data = data;
-        this.msg=msg;
-        this.status=status;
+        this.msg = msg;
+        this.status = status;
     }
-    public LogException(String interfaceName, Object data,String msg) {
+
+    public LogException(String interfaceName, Object data, String msg) {
         this.interfaceName = interfaceName;
         this.data = data;
-        this.msg=msg;
+        this.msg = msg;
     }
 
     public String getInterfaceName() {

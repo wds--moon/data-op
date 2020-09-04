@@ -111,7 +111,7 @@ public class DynamicJdbcAdapter {
         StringBuilder sb = new StringBuilder();
         Map<String, Object> map = new HashMap<>(4);
         sb.append(" select ").append(select).append(" from ").append(" configure conf LEFT JOIN (select name,max(id) id ,COUNT(*) as sum from interface_log WHERE 1=1 and name!='system error' GROUP BY name) sup on conf.interfaceName=sup.`name` ")
-        .append(" LEFT JOIN interface_log sub on sup.id=sub.id  ").append(" where 1=1 ");
+                .append(" LEFT JOIN interface_log sub on sup.id=sub.id  ").append(" where 1=1 ");
 
         if (StringUtils.isNotEmpty(name)) {
             sb.append(" and sup.name = :name");
